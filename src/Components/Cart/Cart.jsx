@@ -10,7 +10,9 @@ const Cart = ({cart, HandleUpdateCartQty, HandleRemoveFromCart, HandleEmptyCart}
         return <Typography variant={"subtitle1"}>No Items in Your Cart...
             <br/>
             <hr/>
-            <Link to={'/'} className={s.link}>Start adding some...</Link>
+            <Button variant={"contained"} size={"large"} color={"primary"}>
+                <Link style={{color: 'white'}} to={'/'} className={s.link}>Start adding some...</Link>
+            </Button>
         </Typography>
     }
     const FilledCart = () => {

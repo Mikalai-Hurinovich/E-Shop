@@ -14,10 +14,10 @@ const CartItem = ({i, HandleUpdateCartQty, HandleRemoveFromCart}) => {
                 </CardContent>
                 <CardActions className={s.cartActions}>
                     <div className={s.buttons}>
-                        <Button type={'button'} size={'small'}
+                        <Button type={'button'} size={'small'} color={"default"}
                                 onClick={() => HandleUpdateCartQty(i.id, i.quantity - 1)}>-</Button>
                         <Typography>{i.quantity}</Typography>
-                        <Button type={'button'} size={'small'}
+                        <Button type={'button'} size={'small'} color={"default"}
                                 onClick={() => HandleUpdateCartQty(i.id, i.quantity + 1)}>+</Button>
                     </div>
                     <Button
