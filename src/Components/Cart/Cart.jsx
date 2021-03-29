@@ -15,7 +15,7 @@ const Cart = ({cart, HandleUpdateCartQty, HandleRemoveFromCart, HandleEmptyCart}
     }
     const FilledCart = () => {
         return <>
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
                 {cart.line_items.map(i => (
                     <Grid item xs={12} sm={4} key={i.id}>
                         <CartItem i={i} HandleUpdateCartQty={HandleUpdateCartQty}
@@ -32,7 +32,7 @@ const Cart = ({cart, HandleUpdateCartQty, HandleRemoveFromCart, HandleEmptyCart}
                             variant={"contained"}
                             color={"secondary"} onClick={HandleEmptyCart}>Empty Cart</Button>
                     <Button component={Link} to={'/checkout'}
-                        className={s.checkoutButton}
+                            className={s.checkoutButton}
                             size={'large'}
                             type={'button'}
                             variant={"contained"}
