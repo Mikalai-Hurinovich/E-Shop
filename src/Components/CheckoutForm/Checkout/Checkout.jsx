@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Paper, Step, StepLabel, Stepper, Typography} from "@material-ui/core";
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
+import {commerce} from "../../../lib/commerce";
 
 function Confirmation() {
     return <div>
@@ -10,11 +11,25 @@ function Confirmation() {
     </div>
 }
 
-const Checkout = () => {
+const Checkout = ({cart}) => {
     const s = useStyles();
     const steps = ['Shipping address', 'Payment details']
     const [activeStep, setActiveStep] = useState(0)
-    const Form = () => activeStep === 0 ? <AddressForm/> : <PaymentForm/>
+    const [checkoutToken, setCheckoutToken] = useState(null)
+    useEffect(() => {
+        const generateToken = async () => {
+            try {
+                const token = await commerce.checkout.generateToken(cart.id, {type: 'cart'})
+                setCheckoutToken(token)
+            } catch (error) {
+            }
+        }
+        generateToken()
+    }, [cart])
+
+    const Form = () => activeStep === 0
+        ? <AddressForm checkoutToken={checkoutToken}/>
+        : <PaymentForm/>
     return (
         <>
             <div className={s.toolbar}/>
@@ -28,7 +43,7 @@ const Checkout = () => {
                             </Step>
                         ))}
                     </Stepper>
-                    {activeStep === steps.length ? <Confirmation/> : <Form/>}
+                    {activeStep === steps.length ? <Confirmation/> : checkoutToken && <Form/>}
                 </Paper>
             </main>
         </>
