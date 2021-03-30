@@ -1,9 +1,12 @@
 import React from 'react'
-
-function PaymentForm() {
+import {loadStripe} from "@stripe/stripe-js/pure";
+import Review from './Review'
+function PaymentForm({shippingData, checkoutToken}) {
     return (
         <div>
-            PaymentForm
+            <>
+            <Review checkoutToken={checkoutToken}/>
+            </>
         </div>
     )
 }

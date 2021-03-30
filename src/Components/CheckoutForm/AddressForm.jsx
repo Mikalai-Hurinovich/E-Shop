@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {useForm, FormProvider} from "react-hook-form";
-import {Grid, InputLabel, MenuItem, Select, Typography} from "@material-ui/core";
+import {Button, Grid, InputLabel, MenuItem, Select, Typography} from "@material-ui/core";
 import FormInput from './FormInput'
 import {commerce} from "../../lib/commerce";
+import {Link} from "react-router-dom";
 
-function AddressForm({checkoutToken}) {
+function AddressForm({checkoutToken, next}) {
     const [shippingCountries, setShippingCountries] = useState([]);
     const [shippingCountry, setShippingCountry] = useState('');
     const [shippingSubDivisions, setShippingSubDivisions] = useState([]);
@@ -18,7 +19,10 @@ function AddressForm({checkoutToken}) {
         id: code,
         label: countryName
     }))
-    const options = shippingOptions.map((shippingOption)=> ({id: shippingOption.id, label: `${shippingOption.description} - (${shippingOption.price.formatted_with_symbol})`}))
+    const options = shippingOptions.map((shippingOption) => ({
+        id: shippingOption.id,
+        label: `${shippingOption.description} - (${shippingOption.price.formatted_with_symbol})`
+    }))
 
     const fetchShippingCountries = async (checkTokenID) => {
         const {countries} = await commerce.services.localeListShippingCountries(checkTokenID);
@@ -51,8 +55,12 @@ function AddressForm({checkoutToken}) {
         <>
             <Typography variant={'h6'} gutterBottom>Shipping Address</Typography>
             <FormProvider {...methods}>
-                <form onSubmit={() => {
-                }}>
+                <form onSubmit={methods.handleSubmit((data) => next({
+                    ...data,
+                    shippingCountry,
+                    shippingSubDivision,
+                    shippingOption
+                }))}>
                     <Grid container spacing={3}>
                         <FormInput required name={'FirstName'} label={'First Name'}/>
                         <FormInput required name={'LastName'} label={'Last Name'}/>
@@ -94,6 +102,12 @@ function AddressForm({checkoutToken}) {
                             </Select>
                         </Grid>
                     </Grid>
+                    <br/>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <Button component={Link} to={'/cart'} variant={'outlined'} color={"secondary"}>Back to
+                            Cart</Button>
+                        <Button type={'submit'} variant={'contained'} color={"primary"}>Next</Button>
+                    </div>
                 </form>
             </FormProvider>
         </>
